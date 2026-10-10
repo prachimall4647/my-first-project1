@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f6fa">
+  <meta name="description" content="CampusMate helps students organize assignments, subjects, attendance, and study time in one calm workspace.">
+  <title>CampusMate — Student Workspace</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+      <a class="brand" href="#dashboard" aria-label="CampusMate home"><span class="brand-mark">C<span>+</span></span><span class="brand-copy"><strong>campusmate</strong><small>STUDENT WORKSPACE</small></span></a>
+      <div class="side-label">WORKSPACE</div>
+      <nav class="primary-nav">
+        <a class="nav-link active" href="#dashboard" data-section="dashboard"><span class="nav-icon">⌂</span><span>Dashboard</span></a>
+        <a class="nav-link" href="#assignments" data-section="assignments"><span class="nav-icon">▤</span><span>Assignments</span><span class="nav-count" id="navPending">0</span></a>
+        <a class="nav-link" href="#subjects" data-section="subjects"><span class="nav-icon">◫</span><span>Subjects</span></a>
+        <a class="nav-link" href="#attendance" data-section="attendance"><span class="nav-icon">◷</span><span>Attendance</span></a>
+        <a class="nav-link" href="#planner" data-section="planner"><span class="nav-icon">▦</span><span>Study planner</span></a>
+        <a class="nav-link" href="#notes" data-section="notes"><span class="nav-icon">✎</span><span>Notes</span></a>
+        <a class="nav-link" href="#cgpa" data-section="cgpa"><span class="nav-icon">◎</span><span>CGPA calculator</span></a>
+      </nav>
+      <div class="sidebar-bottom"><div class="sidebar-note"><span class="note-icon">✦</span><strong>Small steps add up.</strong><p>Make today count, one focus session at a time.</p></div><div class="profile"><div class="avatar">S</div><div><strong>Student</strong><small>Your workspace</small></div><button class="icon-button" id="themeToggle" title="Toggle theme" aria-label="Toggle light or dark theme">◐</button></div></div>
+    </aside>
+    <div class="mobile-bar"><a class="brand" href="#dashboard"><span class="brand-mark">C<span>+</span></span><span class="brand-copy"><strong>campusmate</strong><small>STUDENT WORKSPACE</small></span></a><button class="icon-button" id="mobileMenu" aria-expanded="false" aria-controls="sidebar" aria-label="Open navigation">☰</button></div>
+    <main class="main-content" id="dashboard">
+      <header class="topbar"><div class="breadcrumb">Workspace <span>/</span> <strong id="currentPage">Dashboard</strong></div><div class="topbar-actions"><span class="today-label" id="todayLabel"></span><button class="icon-button top-theme" id="themeToggleTop" aria-label="Toggle theme" title="Toggle theme">◐</button><div class="avatar small-avatar">S</div></div></header>
+      <section class="welcome-row"><div><p class="eyebrow">YOUR CAMPUS, IN CONTROL</p><h1>Good to see you, <span>Student.</span></h1><p class="welcome-copy">A little structure goes a long way. Here's your day at a glance.</p></div><button class="voice-button" id="voiceButton"><span class="mic-icon">♩</span><span><strong>Voice assistant</strong><small id="voiceStatus">Tap to speak a command</small></span><span class="voice-arrow">↗</span></button></section>
+      <section class="stats-grid" aria-label="Academic overview">
+        <article class="stat-card"><div class="stat-top"><span>Total assignments</span><span class="stat-icon blue">▤</span></div><strong class="stat-value" id="statTotal">0</strong><div class="stat-foot"><span>Across all subjects</span><span class="stat-trend">↗</span></div></article>
+        <article class="stat-card"><div class="stat-top"><span>Pending assignments</span><span class="stat-icon amber">◷</span></div><strong class="stat-value" id="statPending">0</strong><div class="stat-foot"><span id="overdueSummary">0 overdue</span><span class="mini-dot amber-dot"></span></div></article>
+        <article class="stat-card"><div class="stat-top"><span>Study time today</span><span class="stat-icon violet">◴</span></div><strong class="stat-value" id="statStudy">0<span class="unit"> min</span></strong><div class="stat-foot"><span>Completed sessions</span><span class="stat-trend">↗</span></div></article>
+        <article class="stat-card"><div class="stat-top"><span>Academic progress</span><span class="stat-icon green">◉</span></div><strong class="stat-value" id="statProgress">0<span class="unit">%</span></strong><div class="progress-track"><span id="progressBar"></span></div><div class="stat-foot"><span>Assignments completed</span></div></article>
+      </section>
+      <div class="content-grid">
+        <section class="panel assignments-panel" id="assignments"><div class="panel-heading"><div><p class="eyebrow">STAY AHEAD</p><h2>Upcoming assignments</h2></div><button class="text-button" data-scroll="assignments">View all <span>→</span></button></div>
+          <div class="list-tools"><label class="search-box"><span>⌕</span><input id="assignmentSearch" type="search" placeholder="Search assignments" aria-label="Search assignments by title or subject"></label><select id="assignmentFilter" aria-label="Filter assignments"><option value="all">All assignments</option><option value="pending">Pending</option><option value="completed">Completed</option><option value="overdue">Overdue</option></select></div>
+          <div class="assignment-list" id="assignmentList"></div>
+          <button class="add-inline" data-open="assignmentModal"><span>＋</span> Add an assignment</button>
+        </section>
+        <section class="panel today-panel" id="planner"><div class="panel-heading"><div><p class="eyebrow">MAKE IT COUNT</p><h2>Today's study sessions</h2></div><button class="icon-button subtle" data-open="sessionModal" aria-label="Add study session">＋</button></div><div class="session-summary"><div class="session-ring"><span id="todaySessionCount">0</span><small>SESSIONS</small></div><div><strong id="sessionSummaryTitle">Your focus, your pace</strong><p id="sessionSummaryText">Add a study session to shape your day.</p></div></div><div id="todaySessions" class="today-sessions"></div><div class="timer-card"><div class="timer-copy"><span class="timer-label">FOCUS TIMER</span><strong id="timerDisplay">25:00</strong><small id="timerState">Ready when you are</small></div><div class="timer-controls"><label class="sr-only" for="timerMinutes">Timer length in minutes</label><input id="timerMinutes" type="number" min="1" max="180" value="25"><button class="button button-dark" id="timerStart">Start focus</button><button class="button button-quiet" id="timerPause" hidden>Pause</button><button class="button button-quiet" id="timerReset">Reset</button></div></div></section>
+      </div>
+      <section class="panel activity-panel"><div class="panel-heading"><div><p class="eyebrow">YOUR MOMENTUM</p><h2>Recent activity</h2></div><span class="activity-caption">Latest updates</span></div><div id="activityList" class="activity-list"></div></section>
+      <section class="workspace-section" id="notes"><div class="section-title"><div><p class="eyebrow">QUICK REFERENCE</p><h2>Study notes</h2><p>Short reminders for the concepts you want to revisit.</p></div></div><div id="notesList" class="notes-grid"></div></section>
+      <!-- DEMO DATA CONTROLS: remove this section before production deployment. -->
+      <section class="demo-tools" aria-label="Demo data tools"><span><strong>Demo data</strong><small>Sample content for previewing CampusMate</small></span><button class="button button-quiet" id="loadDemoData">Load sample workspace</button><button class="demo-clear" id="clearDemoData">Clear sample data</button></section>
+      <section class="workspace-section" id="subjects"><div class="section-title"><div><p class="eyebrow">YOUR CLASSES</p><h2>Subjects</h2><p>Keep the details you need close at hand.</p></div><button class="button button-primary" data-open="subjectModal">＋ Add subject</button></div><div id="subjectList" class="subject-grid"></div></section>
+      <section class="workspace-section" id="attendance"><div class="section-title"><div><p class="eyebrow">SHOW UP, STAY ON TRACK</p><h2>Attendance</h2><p>See where you stand and plan your next classes.</p></div></div><div id="attendanceList" class="attendance-grid"></div></section>
+      <section class="workspace-section" id="cgpa"><div class="section-title"><div><p class="eyebrow">ACADEMIC SNAPSHOT</p><h2>CGPA calculator</h2><p>Estimate a credit-weighted CGPA on a 10-point scale.</p></div></div><div class="panel cgpa-panel"><form id="cgpaForm" class="cgpa-form"><div id="cgpaRows"></div><div class="cgpa-actions"><button class="button button-quiet" type="button" id="addCgpaRow">＋ Add subject</button><button class="button button-primary" type="submit">Calculate CGPA</button></div></form><div class="cgpa-result"><span>ESTIMATED CGPA</span><strong id="cgpaResult">—</strong><small id="cgpaHint">Enter grades and credits to calculate.</small></div></div></section>
+      <footer class="footer">CampusMate <span>·</span> Built for a more focused campus life</footer>
+    </main>
+  </div>
+  <div class="modal-backdrop" id="modalBackdrop" hidden><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><button class="modal-close icon-button" id="modalClose" aria-label="Close dialog">×</button><p class="eyebrow" id="modalEyebrow">GET STARTED</p><h2 id="modalTitle">Add assignment</h2><p class="modal-copy" id="modalCopy">Keep your next deadline in sight.</p><form id="modalForm"></form></section></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
